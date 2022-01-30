@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import sendgridTransport from "nodemailer-sendgrid-transport";
 import dotenv from "dotenv";
 
+dotenv.config();
+
 const SEND_EMAIL_KEY = process.env.SEND_EMAIL_KEY;
 
 export const transporter = nodemailer.createTransport(

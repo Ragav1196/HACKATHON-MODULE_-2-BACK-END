@@ -132,10 +132,10 @@ router.route("/reset-password").post((req, res) => {
     }
 
     const email = emailFromDB.email;
-
     const tokenExpire = new Date();
+    tokenExpire.setMinutes(tokenExpire.getMinutes() + 10);
 
-    const result = await ResetPassword(token, tokenExpire, email);
+    const result = await ResetPassword(token, tokenExpire.toString(), email);
 
     // TO SEND AN AUTOMATIC EMAIL RESET PASSWORD:
     transporter.sendMail({
@@ -148,7 +148,11 @@ router.route("/reset-password").post((req, res) => {
         `,
     });
 
-    res.send(result);
+    res.send({
+      reponse: result,
+      token: token,
+      tokenExpire: tokenExpire.toString(),
+    });
   });
 });
 

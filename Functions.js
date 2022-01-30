@@ -48,7 +48,7 @@ function FindUserWithToken(token) {
     .collection("login")
     .findOne({
       token: token,
-      expireTime: { $lt: new Date(ISODate().getTime() + 3600000) },
+      expireTime: { $gt: new Date().toString() },
     });
 }
 
