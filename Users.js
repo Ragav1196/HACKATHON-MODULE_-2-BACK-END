@@ -12,6 +12,21 @@ import {
   ResetPassword,
   FindUserWithToken,
   UpdatePassword,
+  GetAllServiceReq,
+  AddServiceReq,
+  GetServiceReqById,
+  UpdateServiceReqById,
+  DeleteServiceReqById,
+  GetAllContacts,
+  AddContacts,
+  GetContactsById,
+  UpdateContactsById,
+  DeleteContactsById,
+  GetLeadCounts,
+  GetServceReqCounts,
+  GetContactsCounts,
+  GetAdminMailAddress,
+  SendMail,
 } from "./Functions.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -23,7 +38,7 @@ const router = express.Router();
 // END POINTS FOR THE REGISTER:
 router.route("/register").post(async (req, res) => {
   const dataProvided = req.body;
-  const UsernameFrmDB = await GetUsername(dataProvided.name);
+  const UsernameFrmDB = await GetUsername(dataProvided.username);
   const emailFrmDB = await GetEmail(dataProvided.email);
 
   if (UsernameFrmDB && emailFrmDB) {
@@ -68,7 +83,7 @@ router.route("/register").post(async (req, res) => {
   const result = await AddUsers(
     dataProvided.lname,
     dataProvided.fname,
-    dataProvided.name,
+    dataProvided.username,
     hashedPassword,
     dataProvided.email,
     dataProvided.userType
@@ -80,7 +95,7 @@ router.route("/register").post(async (req, res) => {
 router.route("/login").post(async (req, res) => {
   const dataProvided = req.body;
 
-  const DataFrmDB = await GetUsername(dataProvided.name);
+  const DataFrmDB = await GetUsername(dataProvided.username);
 
   if (!DataFrmDB) {
     res.status(400).send({ message: "Invalid credentials" });
@@ -106,7 +121,7 @@ router.route("/login").post(async (req, res) => {
     res.send({
       message: "Successfull login",
       token: token,
-      name: DataFrmDB.name,
+      username: DataFrmDB.username,
       userType: DataFrmDB.userType,
     });
   } else {
@@ -138,15 +153,11 @@ router.route("/reset-password").post((req, res) => {
     const result = await ResetPassword(token, tokenExpire.toString(), email);
 
     // TO SEND AN AUTOMATIC EMAIL RESET PASSWORD:
-    transporter.sendMail({
-      to: emailFromDB.email,
-      from: "ragavofficial01@outlook.com",
-      subject: "Reset Password",
-      html: `
-        <h1>You requested for a password change</h1>
-        <h3>Click on this <a href="http://localhost:3000/new-password/${token}">link</a> to reset your password</h3>
-        `,
-    });
+    const subject = "Reset Password";
+    const content = ` <h1>You requested for a password change</h1>
+          <h3>Click on this <a href="http://localhost:3000/new-password/${token}">link</a> to reset your password</h3>
+          `;
+    SendMail(emailFromDB.email, subject, content);
 
     res.send({
       reponse: result,
@@ -191,6 +202,11 @@ router
 
     const addLead = await AddLeads(data);
 
+    const GetAdmin = await GetAdminMailAddress();
+    const subject = "New lead is added";
+    const content = `<h3>Check CRM app, to know more about the newly added lead</h3>`;
+    GetAdmin.forEach(({ email }) => SendMail(email, subject, content));
+
     res.send(addLead);
   });
 
@@ -217,5 +233,102 @@ router
     const deleteLeadData = await DeleteLeadsById(id);
     res.send(deleteLeadData);
   });
+
+// END POINTS FOR THE SERVICE REQUESTS:
+router
+  .route("/service-request")
+  .get(async (req, res) => {
+    const ServiceReqData = await GetAllServiceReq();
+
+    res.send(ServiceReqData);
+  })
+  .post(async (req, res) => {
+    const data = req.body;
+
+    const addServiceReq = await AddServiceReq(data);
+
+    const GetAdmin = await GetAdminMailAddress();
+    const subject = "New service request is added";
+    const content = `<h3>Check CRM app, to know more about the newly added service request</h3>`;
+    GetAdmin.forEach(({ email }) => SendMail(email, subject, content));
+
+    res.send(addServiceReq);
+  });
+
+router
+  .route("/service-request/:id")
+  .get(async (req, res) => {
+    const { id } = req.params;
+
+    const ServiceReqData = await GetServiceReqById(id);
+    res.send(ServiceReqData);
+  })
+  .put(async (req, res) => {
+    const { id } = req.params;
+
+    const data = req.body;
+
+    const updateServiceReq = await UpdateServiceReqById(id, data);
+
+    res.send(updateServiceReq);
+  })
+  .delete(async (req, res) => {
+    const { id } = req.params;
+
+    const deleteServiceReqData = await DeleteServiceReqById(id);
+    res.send(deleteServiceReqData);
+  });
+
+// END POINTS FOR THE CONTACTS:
+router
+  .route("/contacts")
+  .get(async (req, res) => {
+    const ContactsData = await GetAllContacts();
+    res.send(ContactsData);
+  })
+  .post(async (req, res) => {
+    const data = req.body;
+
+    const addContacts = await AddContacts(data);
+
+    const GetAdmin = await GetAdminMailAddress();
+    const subject = "New contact is added";
+    const content = `<h3>Check CRM app, to know more about the newly added contact</h3>`;
+    GetAdmin.forEach(({ email }) => SendMail(email, subject, content));
+
+    res.send(addContacts);
+  });
+
+router
+  .route("/contacts/:id")
+  .get(async (req, res) => {
+    const { id } = req.params;
+
+    const ContactsData = await GetContactsById(id);
+    res.send(ContactsData);
+  })
+  .put(async (req, res) => {
+    const { id } = req.params;
+
+    const data = req.body;
+
+    const updateContacts = await UpdateContactsById(id, data);
+
+    res.send(updateContacts);
+  })
+  .delete(async (req, res) => {
+    const { id } = req.params;
+
+    const deleteContactsData = await DeleteContactsById(id);
+    res.send(deleteContactsData);
+  });
+
+// TO GET COUNTS OF THE LEADS, SERVICE REQUESTS AND CONTACTS:
+router.route("/get-counts").get(async (req, res) => {
+  const leadsCount = await GetLeadCounts();
+  const serviceReqCount = await GetServceReqCounts();
+  const ContactsCount = await GetContactsCounts();
+  res.send({ leadsCount, serviceReqCount, ContactsCount });
+});
 
 export const userRouter = router;

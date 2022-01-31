@@ -1,7 +1,47 @@
-{
-  "lname": "Panchatsharam",
-  "fname": "Ragavendiran",
-  "password": "Ragav123@",
-  "email": "ragavinrap@gmail.com",
-  "userType": "Admin"
-}
+[
+  {
+    "name": "Ragavendiran Panchatsharam",
+    "Phone": "9374836836",
+    "company": "Jingle bell",
+    "email": "ragav@gmail.com",
+    "title": "E-Commerce",
+    "contactsSource": "Newspaper",
+    "picture": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+  },
+  {
+    "name": "Akshaya Srinivasan",
+    "Phone": "9234579263",
+    "company": "VisionSwipe",
+    "email": "akshaya@gmail.com",
+    "title": "E-Commerce",
+    "contactsSource": "Advertisement",
+    "picture": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
+  },
+  {
+    "name": "Ramya Kannan",
+    "Phone": "9375983927",
+    "company": "QuickSpace",
+    "email": "ramya2626@gmail.com",
+    "title": "Media",
+    "contactsSource": "Magazine",
+    "picture": "https://www.whatsappprofiledpimages.com/wp-content/uploads/2021/08/Profile-Photo-Wallpaper.jpg"
+  },
+  {
+    "name": "Rakesh Govind",
+    "Phone": "9375620487",
+    "company": "Knowza",
+    "email": "Rakesh8392@gmail.com",
+    "title": "Tourism",
+    "contactsSource": "Friend",
+    "picture": "https://media.istockphoto.com/photos/millennial-male-team-leader-organize-virtual-workshop-with-employees-picture-id1300972574?b=1&k=20&m=1300972574&s=170667a&w=0&h=2nBGC7tr0kWIU8zRQ3dMg-C5JLo9H2sNUuDjQ5mlYfo="
+  },
+  {
+    "name": "Vijay Daniel",
+    "Phone": "9754836579",
+    "company": "SecuriToday",
+    "email": "vijayvinay@gmail.com",
+    "title": "Defence",
+    "contactsSource": "Advertisement",
+    "picture": "https://us.123rf.com/450wm/fizkes/fizkes2007/fizkes200701793/152407909-profile-picture-of-smiling-young-caucasian-man-in-glasses-show-optimism-positive-and-motivation-head.jpg?ver=6"
+  }
+]
