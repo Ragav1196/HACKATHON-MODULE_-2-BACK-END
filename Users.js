@@ -156,7 +156,7 @@ router.route("/reset-password").post((req, res) => {
     // TO SEND AN AUTOMATIC EMAIL RESET PASSWORD:
     const subject = "Reset Password";
     const content = ` <h1>You requested for a password change</h1>
-          <h3>Click on this <a href="http://localhost:3000/new-password/${token}">link</a> to reset your password</h3>
+          <h3>Click on this <a href="https://angry-mcclintock-279e94.netlify.app/new-password/${token}">link</a> to reset your password</h3>
           `;
     SendMail(emailFromDB.email, subject, content);
 
