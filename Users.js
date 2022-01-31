@@ -27,6 +27,7 @@ import {
   GetContactsCounts,
   GetAdminMailAddress,
   SendMail,
+  GetUsersCount,
 } from "./Functions.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -161,7 +162,6 @@ router.route("/reset-password").post((req, res) => {
 
     res.send({
       reponse: result,
-      token: token,
       tokenExpire: tokenExpire.toString(),
     });
   });
@@ -176,7 +176,9 @@ router.route("/new-password").post(async (req, res) => {
 
   const user = await FindUserWithToken(token);
   if (!user) {
-    return res.status(422).send({ message: "Try again session expired" });
+    return res
+      .status(422)
+      .send({ message: "Try again session expired", error: true });
   }
 
   bcrypt
@@ -328,7 +330,8 @@ router.route("/get-counts").get(async (req, res) => {
   const leadsCount = await GetLeadCounts();
   const serviceReqCount = await GetServceReqCounts();
   const ContactsCount = await GetContactsCounts();
-  res.send({ leadsCount, serviceReqCount, ContactsCount });
+  const usersCount = await GetUsersCount();
+  res.send({ leadsCount, serviceReqCount, ContactsCount, usersCount });
 });
 
 export const userRouter = router;

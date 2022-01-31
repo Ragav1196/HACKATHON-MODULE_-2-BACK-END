@@ -186,6 +186,10 @@ function GetContactsCounts() {
   return client.db("hackathonModule-2").collection("contacts").find({}).count();
 }
 
+function GetUsersCount() {
+  return client.db("hackathonModule-2").collection("login").find({}).count();
+}
+
 function GetAdminMailAddress() {
   return client
     .db("hackathonModule-2")
@@ -242,4 +246,5 @@ export {
   GetContactsCounts,
   GetAdminMailAddress,
   SendMail,
+  GetUsersCount,
 };
